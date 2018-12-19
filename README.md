@@ -13,7 +13,8 @@ gRPCを使用しているのでクライアント側は任意の言語で実装�
 
 
 ## Installation
-1. git clone any folder
+1. git clone ${GOPATH}/github.com/sakokazuki/simplegrpc or any directory
+`git clone ${remoteurl} ${GOPATH}/github.com/sakokazuki/simplegrpc` or  
 `git clone ${remoteurl} simplegrpc`
 2. cd
 `cd simplegrpc`
