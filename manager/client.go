@@ -1,9 +1,9 @@
 package manager
 
 import (
-	"github.com/sakokazuki/simplegrpc/event"
-	"strings"
 	"sync"
+
+	"github.com/sakokazuki/simplegrpc/event"
 )
 
 type Client struct {
@@ -74,51 +74,27 @@ func (cm *ClientManager) DeleteEvents(client *Client) {
 	}
 }
 
-const eventSeparator = ":"
-
-// hoge:piyo:fuga -> [hoge, hoge:piyo, hoge:piyo:fuga]
-func (cm *ClientManager) createEvents(request string) []string {
-	cnt := strings.Count(request, eventSeparator) + 1
-	events := make([]string, cnt)
-
-	idx := strings.Index(request, eventSeparator)
-	for i := 0; i < cnt-1; i++ {
-		events[i] = request[:idx]
-		idx = len(request[:idx]) + strings.Index(request[idx+1:], eventSeparator) + 1
-	}
-	events[cnt-1] = request
-	return events
-}
-
 func (cm *ClientManager) SendPayload(payload event.Payload) {
-	events := cm.createEvents(payload.Meta.Type)
+	eventname := payload.Meta.Type
 
-	wg := sync.WaitGroup{}
-	for _, e := range events {
-		wg.Add(1)
-		go func(e string) {
-			defer wg.Done()
-			clientsTable, ok := cm.clientsTable[e]
-			if !ok {
-				return
-			}
-			clientsTable.mu.RLock()
-			clients := clientsTable.clients
-			clientsTable.mu.RUnlock()
-
-			wg2 := sync.WaitGroup{}
-			for client := range clients {
-				wg2.Add(1)
-				go func(client chan event.Payload) {
-					defer wg2.Done()
-					sendPayloadSafety(client, payload)
-
-				}(client)
-			}
-			wg2.Wait()
-		}(e)
+	clientsTable, ok := cm.clientsTable[eventname]
+	if !ok {
+		return
 	}
-	wg.Wait()
+	clientsTable.mu.RLock()
+	clients := clientsTable.clients
+	clientsTable.mu.RUnlock()
+
+	wg2 := sync.WaitGroup{}
+	for client := range clients {
+		wg2.Add(1)
+		go func(client chan event.Payload) {
+			defer wg2.Done()
+			sendPayloadSafety(client, payload)
+
+		}(client)
+	}
+	wg2.Wait()
 }
 
 func sendPayloadSafety(client chan event.Payload, payload event.Payload) {

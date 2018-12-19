@@ -4,6 +4,9 @@
 イベントをpushすると購読しているクライアントにイベントが通知されるだけのシンプルなサーバーです。  
 gRPCを使用しているのでクライアント側は任意の言語で実装することができます。  
 
+イベント名は任意のstring、push時にイベント名とmessageを指定。そのイベント名を購読している  
+クライアントのみにmessageが通知される(詳細はprotocol buffersを参照)
+
 
 ## Requirement
 - go version >=v1.11 (use modules)

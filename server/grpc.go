@@ -10,7 +10,6 @@ import (
 	"github.com/sakokazuki/simplegrpc/manager"
 	pb "github.com/sakokazuki/simplegrpc/protobuf"
 	"github.com/sakokazuki/simplegrpc/pubsub"
-
 	"google.golang.org/grpc/codes"
 
 	"github.com/pkg/errors"
