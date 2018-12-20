@@ -28,10 +28,15 @@ gRPCを使用しているのでクライアント側は任意の言語で実装�
 `./simplegrpc` and server start at `localhost:10151`
 
 ## Test Client
+
+## go
 サーバーに接続して定期的にイベントを発行するだけのシンプルなクライアントを一応用意しました。  
 
-1. `cd clident`
+1. `cd client`
 2. `go run main.go`
+
+## unity
+https://github.com/sakokazuki/SimplegrpcClientForUnity
 
 ## TODO
 - サーバーのポートを起動時に設定できるように
@@ -39,4 +44,5 @@ gRPCを使用しているのでクライアント側は任意の言語で実装�
 - テスト書いてみる？
 
 ## reference
+コードの殆どはこれを参考にした  
 plasma (https://github.com/openfresh/plasma)
