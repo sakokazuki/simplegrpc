@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net"
 	"os"
 	"os/signal"
@@ -28,7 +27,6 @@ func grpcListener(config config.Config) net.Listener {
 
 func main() {
 	config := config.New()
-	fmt.Printf("is build %t\n", config.Debug)
 
 	logging := logging.Setup(config)
 	defer logging.Close()
