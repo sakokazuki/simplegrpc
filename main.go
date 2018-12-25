@@ -1,12 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/sakokazuki/simplegrpc/config"
+	"github.com/sakokazuki/simplegrpc/logging"
 	"github.com/sakokazuki/simplegrpc/pubsub"
 	"github.com/sakokazuki/simplegrpc/server"
 
@@ -26,6 +28,10 @@ func grpcListener(config config.Config) net.Listener {
 
 func main() {
 	config := config.New()
+	fmt.Printf("is build %t\n", config.Debug)
+
+	logging := logging.Setup(config)
+	defer logging.Close()
 
 	gl := grpcListener(config)
 	defer gl.Close()
@@ -57,7 +63,7 @@ func main() {
 
 		eg := errgroup.Group{}
 		eg.Go(func() error {
-			log.Fatal().Err(err).Msg("shutdown gRPC Server gracefully...")
+			log.Info().Msg("shutdown gRPC Server gracefully...")
 			grpcServer.GracefulStop()
 			return nil
 		})

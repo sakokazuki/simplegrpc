@@ -19,10 +19,10 @@ gRPCを使用しているのでクライアント側は任意の言語で実装�
 2. cd
 `cd simplegrpc`
 3. build and automatically update go.mod and download dependencies if needed. 
-`go build`
+`make build` or `go build -tags=release`
 
 ## Development
-`go run main.go`
+`make dev` or `go run main.go`
 
 ## Useage
 `./simplegrpc` and server start at `localhost:10151`
@@ -31,9 +31,11 @@ gRPCを使用しているのでクライアント側は任意の言語で実装�
 
 ## go
 サーバーに接続して定期的にイベントを発行するだけのシンプルなクライアントを一応用意しました。  
-
+1. `make client`
+or  
 1. `cd client`
-2. `go run main.go`
+2. `go run main.go`　　
+
 
 ## unity
 https://github.com/sakokazuki/SimplegrpcClientForUnity
